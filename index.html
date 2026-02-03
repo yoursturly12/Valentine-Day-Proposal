@@ -3,42 +3,54 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hey Cutie 💖</title>
+<title>Hey You 💗</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
 }
 
 body {
   height: 100vh;
-  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  background: #ffc0cb;
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: 'Montserrat', sans-serif;
   overflow: hidden;
 }
 
-.container {
+.card {
+  background: rgba(255,255,255,0.65);
+  padding: 45px;
+  border-radius: 22px;
   text-align: center;
-  background: rgba(255,255,255,0.2);
-  backdrop-filter: blur(10px);
-  padding: 40px;
-  border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-  max-width: 90%;
-  width: 400px;
+  width: 90%;
+  max-width: 420px;
+  position: relative;
 }
 
 h1 {
-  font-size: 1.8rem;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.9rem;
+  color: #000;
+  margin-bottom: 15px;
+}
+
+.highlight {
+  font-weight: 700;
+}
+
+p {
+  font-size: 1rem;
+  color: #000;
   margin-bottom: 30px;
-  color: #fff;
+  font-weight: 400;
 }
 
 .buttons {
@@ -47,94 +59,116 @@ h1 {
 }
 
 button {
-  padding: 12px 30px;
-  font-size: 1rem;
-  border: none;
+  padding: 12px 32px;
   border-radius: 30px;
+  border: none;
+  font-size: 0.95rem;
   cursor: pointer;
-  transition: 0.3s;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .yes {
-  background: #ff4d6d;
-  color: white;
+  background: black;
+  color: pink;
 }
 
 .no {
-  background: white;
-  color: #ff4d6d;
+  background: transparent;
+  border: 1px solid black;
+  color: black;
   position: absolute;
-  left: 60%;
+  left: 55%;
   top: 50%;
 }
 
-.message {
-  color: white;
-  font-size: 1.2rem;
-  margin-top: 20px;
-  display: none;
+.heart {
+  position: fixed;
+  bottom: -20px;
+  font-size: 20px;
+  animation: floatUp 3s linear forwards;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-100vh); opacity: 0; }
 }
 </style>
 </head>
 
 <body>
 
-<div class="container" id="step1">
-  <h1>Hey cutie 💕<br>Are you free on 14th Feb?</h1>
-  <div class="buttons">
-    <button class="yes" onclick="firstYes()">Yes 😌</button>
-    <button class="no" id="no1">No 🙃</button>
-  </div>
-</div>
-
-<div class="container" id="step2" style="display:none;">
-  <h1>Very good 😏<br>That's like a good girl 💖</h1>
-  <p class="message" style="display:block;">
-    Will you go out on a date with me<br>and a virtual date with me? 🥺👉👈
+<!-- SCREEN 1 -->
+<div class="card" id="screen1">
+  <h1>
+    <span class="highlight">Hey</span>, what are you doing right now? 💭
+  </h1>
+  <p>
+    Because I was wondering…  
+    you look like someone who’d make **14th Feb** feel a little special 🌸
   </p>
+  <p class="highlight">Are you free on 14th of Feb?</p>
+
   <div class="buttons">
-    <button class="yes" onclick="secondYes()">Yes 💕</button>
-    <button class="no" id="no2">No 😬</button>
+    <button class="yes" onclick="nextScreen('screen1','screen2')">Yes</button>
+    <button class="no" id="no1">No</button>
   </div>
 </div>
 
-<div class="container" id="step3" style="display:none;">
-  <h1>Booking Confirmed ✅💘</h1>
-  <p class="message" style="display:block;">
-    On 14th Feb, be ready ✨<br><br>
-    Please DM me your address 📍<br>
-    I have something special coming for you 🎁💖
+<!-- SCREEN 2 -->
+<div class="card" id="screen2" style="display:none;">
+  <h1>Okay… so since you said <span class="highlight">yes</span> 😌</h1>
+  <p>
+    How about we go on a  
+    <span class="highlight">virtual date</span> together? ☕💻
+  </p>
+
+  <div class="buttons">
+    <button class="yes" onclick="nextScreen('screen2','screen3')">Yes</button>
+    <button class="no" id="no2">No</button>
+  </div>
+</div>
+
+<!-- SCREEN 3 -->
+<div class="card" id="screen3" style="display:none;">
+  <h1>Booking Confirmed 💖</h1>
+  <p style="font-family:'Playfair Display', serif;">
+    Now be ready on <span class="highlight">14th Feb</span> ✨  
+    <br><br>
+    DM me your address 📍  
+    <br>
+    I’ve got something special coming for you 🎁
   </p>
 </div>
 
 <script>
-function moveButton(btn) {
-  const x = Math.random() * (window.innerWidth - 100);
-  const y = Math.random() * (window.innerHeight - 100);
-  btn.style.left = x + "px";
-  btn.style.top = y + "px";
+function moveNo(btn) {
+  const maxX = window.innerWidth - 120;
+  const maxY = window.innerHeight - 120;
+  btn.style.left = Math.random() * maxX + "px";
+  btn.style.top = Math.random() * maxY + "px";
 }
 
-const no1 = document.getElementById("no1");
-const no2 = document.getElementById("no2");
+document.getElementById("no1").addEventListener("mouseover", e => moveNo(e.target));
+document.getElementById("no2").addEventListener("mouseover", e => moveNo(e.target));
 
-no1.addEventListener("mouseover", () => moveButton(no1));
-no1.addEventListener("click", () => moveButton(no1));
-
-no2.addEventListener("mouseover", () => moveButton(no2));
-no2.addEventListener("click", () => moveButton(no2));
-
-function firstYes() {
-  document.getElementById("step1").style.display = "none";
-  document.getElementById("step2").style.display = "block";
+function nextScreen(current, next) {
+  hearts();
+  document.getElementById(current).style.display = "none";
+  document.getElementById(next).style.display = "block";
 }
 
-function secondYes() {
-  document.getElementById("step2").style.display = "none";
-  document.getElementById("step3").style.display = "block";
+function hearts() {
+  for (let i = 0; i < 15; i++) {
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.innerText = "💖";
+    h.style.left = Math.random() * 100 + "vw";
+    h.style.animationDuration = (Math.random() * 2 + 2) + "s";
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 3000);
+  }
 }
 </script>
 
 </body>
 </html>
-

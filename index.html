@@ -23,23 +23,25 @@ body {
   align-items: center;
   font-family: 'Montserrat', sans-serif;
   overflow: hidden;
+  color: #000;
 }
 
 .card {
-  background: rgba(255,255,255,0.65);
-  padding: 45px;
-  border-radius: 22px;
+  background: rgba(255,255,255,0.75);
+  padding: 48px;
+  border-radius: 26px;
   text-align: center;
   width: 90%;
-  max-width: 420px;
+  max-width: 440px;
   position: relative;
+  z-index: 2;
 }
 
 h1 {
   font-family: 'Playfair Display', serif;
   font-size: 1.9rem;
+  margin-bottom: 18px;
   color: #000;
-  margin-bottom: 15px;
 }
 
 .highlight {
@@ -48,49 +50,56 @@ h1 {
 
 p {
   font-size: 1rem;
-  color: #000;
   margin-bottom: 30px;
   font-weight: 400;
+  color: #000;
 }
 
 .buttons {
   position: relative;
-  height: 120px;
+  height: 130px;
 }
 
 button {
-  padding: 12px 32px;
+  padding: 12px 34px;
   border-radius: 30px;
-  border: none;
+  border: 1px solid #000;
   font-size: 0.95rem;
   cursor: pointer;
   font-family: 'Montserrat', sans-serif;
+  background: transparent;
+  color: #000;
 }
 
 .yes {
-  background: black;
-  color: pink;
+  background: #000;
+  color: #ffc0cb;
+  border: none;
 }
 
 .no {
-  background: transparent;
-  border: 1px solid black;
-  color: black;
   position: absolute;
   left: 55%;
-  top: 50%;
+  top: 55%;
 }
 
+/* HEARTS */
 .heart {
   position: fixed;
-  bottom: -20px;
-  font-size: 20px;
-  animation: floatUp 3s linear forwards;
+  font-size: 24px;
+  animation: floatUp 1.8s ease-out forwards;
+  z-index: 1;
 }
 
 @keyframes floatUp {
-  0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(-100vh); opacity: 0; }
+  0% {
+    transform: translateY(0) scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-120vh) scale(1.4);
+    opacity: 0;
+  }
 }
 </style>
 </head>
@@ -100,30 +109,32 @@ button {
 <!-- SCREEN 1 -->
 <div class="card" id="screen1">
   <h1>
-    <span class="highlight">Hey</span>, what are you doing right now? 💭
+    <span class="highlight">Hey</span>… what are you doing right now? 💭
   </h1>
   <p>
-    Because I was wondering…  
-    you look like someone who’d make **14th Feb** feel a little special 🌸
+    Because I had this tiny thought —  
+    you could make <span class="highlight">14th Feb</span> feel special 🌸
   </p>
   <p class="highlight">Are you free on 14th of Feb?</p>
 
   <div class="buttons">
-    <button class="yes" onclick="nextScreen('screen1','screen2')">Yes</button>
+    <button class="yes" onclick="goNext('screen1','screen2')">Yes</button>
     <button class="no" id="no1">No</button>
   </div>
 </div>
 
 <!-- SCREEN 2 -->
 <div class="card" id="screen2" style="display:none;">
-  <h1>Okay… so since you said <span class="highlight">yes</span> 😌</h1>
+  <h1>
+    Okay… since you said <span class="highlight">yes</span> 😌
+  </h1>
   <p>
-    How about we go on a  
-    <span class="highlight">virtual date</span> together? ☕💻
+    Would you like to go on a  
+    <span class="highlight">virtual date</span> with me? ☕💻
   </p>
 
   <div class="buttons">
-    <button class="yes" onclick="nextScreen('screen2','screen3')">Yes</button>
+    <button class="yes" onclick="goNext('screen2','screen3')">Yes</button>
     <button class="no" id="no2">No</button>
   </div>
 </div>
@@ -132,18 +143,18 @@ button {
 <div class="card" id="screen3" style="display:none;">
   <h1>Booking Confirmed 💖</h1>
   <p style="font-family:'Playfair Display', serif;">
-    Now be ready on <span class="highlight">14th Feb</span> ✨  
+    Be ready on <span class="highlight">14th Feb</span> ✨  
     <br><br>
     DM me your address 📍  
     <br>
-    I’ve got something special coming for you 🎁
+    I have something special coming for you 🎁
   </p>
 </div>
 
 <script>
 function moveNo(btn) {
-  const maxX = window.innerWidth - 120;
-  const maxY = window.innerHeight - 120;
+  const maxX = window.innerWidth - 140;
+  const maxY = window.innerHeight - 140;
   btn.style.left = Math.random() * maxX + "px";
   btn.style.top = Math.random() * maxY + "px";
 }
@@ -151,22 +162,25 @@ function moveNo(btn) {
 document.getElementById("no1").addEventListener("mouseover", e => moveNo(e.target));
 document.getElementById("no2").addEventListener("mouseover", e => moveNo(e.target));
 
-function nextScreen(current, next) {
-  hearts();
-  document.getElementById(current).style.display = "none";
-  document.getElementById(next).style.display = "block";
+function heartExplosion() {
+  for (let i = 0; i < 60; i++) {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerText = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.bottom = "-20px";
+    heart.style.animationDuration = (Math.random() * 0.8 + 1.2) + "s";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 1800);
+  }
 }
 
-function hearts() {
-  for (let i = 0; i < 15; i++) {
-    const h = document.createElement("div");
-    h.className = "heart";
-    h.innerText = "💖";
-    h.style.left = Math.random() * 100 + "vw";
-    h.style.animationDuration = (Math.random() * 2 + 2) + "s";
-    document.body.appendChild(h);
-    setTimeout(() => h.remove(), 3000);
-  }
+function goNext(current, next) {
+  heartExplosion();
+  setTimeout(() => {
+    document.getElementById(current).style.display = "none";
+    document.getElementById(next).style.display = "block";
+  }, 1200);
 }
 </script>
 
